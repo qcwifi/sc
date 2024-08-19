@@ -1,0 +1,64 @@
+#!/bin/sh /etc/rc.common
+# Copyright (c) 2011-2017 OpenWrt.org
+
+START=90
+
+. /lib/functions/network.sh
+
+start(){
+	config_load dogcom
+	config_get version config version
+
+	if [ "$(uci get dogcom.config.enabled)" = "0" ]; then
+		pid=`cat /tmp/dogcom.pid`
+		kill $pid
+		rm -f /tmp/dogcom.pid
+		echo "Dogcom has been stopped."
+	else
+		if [ "$version" == "dhcp" ]; then
+			/usr/bin/dogcom -m dhcp -c /etc/dogcom.conf -d -e
+			echo "Dogcom version dhcp has been started."
+		fi
+
+		if [ "$version" == "pppoe" ]; then
+			/usr/bin/dogcom -m pppoe -c /etc/dogcom.conf -d -e
+			echo "Dogcom version pppoe has been started."
+		fi
+
+		if [ "$version" == "8021" ]; then	
+			usr=$(uci get asconfig.wan.username)
+			psd=$(uci get asconfig.wan.password)
+			cat > /etc/8021x.conf <<EOF
+ctrl_interface=/var/run/wpa_supplicant
+ap_scan=0
+network={
+	key_mgmt=IEEE8021X
+	eap=MD5
+	identity="$usr"
+	password="$psd"
+	eapol_flags=0
+}
+EOF
+			killall wpa_supplicant
+			wpa_supplicant -i eth0.2 -B -D wired -c /etc/8021x.conf &
+		fi
+	fi
+}
+
+stop(){
+	if [ ! -f "/tmp/dogcom.pid" ]; then
+		echo "Dogcom is not running."
+	else
+		pid=`cat /tmp/dogcom.pid`
+		kill $pid
+		rm -f /tmp/dogcom.pid
+		echo "Dogcom has been stopped."
+	fi
+}
+
+restart(){
+	stop
+	sleep 1
+	start
+	echo "Dogcom has been restarted."
+}

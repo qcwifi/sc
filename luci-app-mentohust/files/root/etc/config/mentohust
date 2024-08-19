@@ -1,0 +1,2 @@
+config mentohust
+	option ifname 'eth0.2'
