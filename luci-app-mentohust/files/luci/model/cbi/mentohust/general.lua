@@ -45,7 +45,6 @@ o:tab("advanced", translate("高级设置"))
 enable = o:taboption("base", Flag, "enable", translate("启用"))
 name = o:taboption("base", Value, "username", translate("用户名"),translate("您的用户名(或管理员分配的用户名)"))
 pass = o:taboption("base", Value, "password", translate("密码"), translate("您的密码(或管理员分配的密码)"))
-pass.password = true
 
 ifname = o:taboption("base", ListValue, "ifname", translate("接口"), translate("WAN口的物理接口"))
 for k, v in ipairs(luci.sys.net.devices()) do
