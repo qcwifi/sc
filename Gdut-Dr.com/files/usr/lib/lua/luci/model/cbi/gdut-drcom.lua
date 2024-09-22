@@ -34,7 +34,6 @@ username = s:option(Value, "username", translate("校园网帐号"), translate("
 username:depends("enabledial", "1")
 password = s:option(Value, "password", translate("密码"), translate("端口对应<strong>学号的密码</strong>"))
 password:depends("enabledial", "1")
-password.password = true
 
 macaddr = s:option(Value, "macaddr", translate("MAC拨号"),translate("使用<strong>eth0.2的MAC</strong>，随意<strong>修改后2位数字</strong> <br> 格式：<strong>78:B4:99:88:E9:86</strong>"))
 macaddr.datatype="macaddr"
