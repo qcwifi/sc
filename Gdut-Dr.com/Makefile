@@ -62,8 +62,8 @@ define Package/gdut-drcom/install
 	$(INSTALL_DATA)  ./files/etc/config/gdut_drcom $(1)/etc/config
 	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/controller
 	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/controller/gdut-drcom.lua $(1)/usr/lib/lua/luci/controller
-	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/model/cbi
-	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/gdut-drcom.lua $(1)/usr/lib/lua/luci/model/cbi
+	$(INSTALL_DIR)   $(1)/etc/wifiboxpro/
+	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/* $(1)/etc/wifiboxpro/
 endef
 
 $(eval $(call BuildPackage,gdut-drcom))
